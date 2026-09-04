@@ -1,5 +1,8 @@
 from re import L
 from turtle import pos
+from constants import ASTEROID_MIN_RADIUS
+from logger import log_event
+import random
 
 import pygame
 
@@ -15,3 +18,18 @@ class Asteroid(CircleShape):
 
     def update(self, dt: float) -> None:
         self.position += self.velocity * dt
+
+    def split(self):
+        self.kill()
+        if self.radius <=ASTEROID_MIN_RADIUS:
+            return
+        else:
+            log_event("asteroid_split")
+            random_angle = random.uniform(20, 50)
+            vector1 = self.velocity.rotate(random_angle)
+            vector2 = self.velocity.rotate(-random_angle)
+            new_radius = self.radius - ASTEROID_MIN_RADIUS
+            child_asteroid1 = Asteroid(self.position.x, self.position.y, new_radius)
+            child_asteroid2 = Asteroid(self.position.x, self.position.y, new_radius)
+            child_asteroid1.velocity = (vector1 * 1.2)
+            child_asteroid2.velocity = (vector2 * 1.2)
