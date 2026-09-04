@@ -11,3 +11,4 @@ wheels/
 
 # I don't know what this is yet
 game_state.jsonl
+game_events.jsonl
